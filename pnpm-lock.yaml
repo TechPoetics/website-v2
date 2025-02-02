@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@aws-sdk/client-s3':
+    specifier: ^3.740.0
+    version: 3.740.0
+  '@aws-sdk/lib-storage':
+    specifier: ^3.740.0
+    version: 3.740.0(@aws-sdk/client-s3@3.740.0)
   '@payloadcms/db-postgres':
     specifier: latest
     version: 3.20.0(@types/react@19.0.7)(payload@3.20.0)(react@19.0.0)
@@ -19,6 +25,9 @@ dependencies:
     version: 3.20.0(@types/react@19.0.7)(graphql@16.10.0)(monaco-editor@0.52.2)(next@15.1.6)(payload@3.20.0)(react-dom@19.0.0)(react@19.0.0)(typescript@5.7.3)
   '@payloadcms/payload-cloud':
     specifier: latest
+    version: 3.20.0(payload@3.20.0)
+  '@payloadcms/plugin-cloud-storage':
+    specifier: ^3.20.0
     version: 3.20.0(payload@3.20.0)
   '@payloadcms/plugin-form-builder':
     specifier: latest
