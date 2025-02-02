@@ -106,7 +106,7 @@ export const plugins: Plugin[] = [
       endpoint: process.env.S3_ENDPOINT ?? 'http://localhost:4566', // LocalStack S3 endpoint
       forcePathStyle: true, // Required for LocalStack
       requestChecksumCalculation: 'WHEN_REQUIRED',
-      responseChecksumValidation: 'WHEN_SUPPORTED'
+      responseChecksumValidation: 'WHEN_REQUIRED',
     },
   }),
 ]
