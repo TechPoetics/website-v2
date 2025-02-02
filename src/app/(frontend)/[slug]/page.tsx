@@ -56,6 +56,9 @@ export default async function Page({ params: paramsPromise }: Args) {
     page = await queryPageBySlug({
       slug: 'events',
     })
+    if (!page) {
+      page = homeStatic
+    }
   } else {
     page = await queryPageBySlug({
       slug,
