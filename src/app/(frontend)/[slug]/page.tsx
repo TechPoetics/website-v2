@@ -52,13 +52,14 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   let page: PageType | null
 
-  page = await queryPageBySlug({
-    slug,
-  })
-
-  // Remove this code once your website is seeded
-  if (!page && slug === 'home') {
-    page = homeStatic
+  if (slug === 'home') {
+    page = await queryPageBySlug({
+      slug: 'events',
+    })
+  } else {
+    page = await queryPageBySlug({
+      slug,
+    })
   }
 
   if (!page) {

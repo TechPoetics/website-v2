@@ -10,9 +10,10 @@ import { HeaderNav } from './Nav'
 
 interface HeaderClientProps {
   data: Header
+  isAuthenticated: boolean
 }
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
+export const HeaderClient: React.FC<HeaderClientProps> = ({ data, isAuthenticated }) => {
   /* Storing the value in a useState to avoid hydration errors */
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
@@ -35,7 +36,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <h1 className="text-3xl md:text-5xl lg:text-6xl">Boston Tech Poetics</h1>
           <p>A creative tech community in the Greater Boston Area</p>
         </Link>
-        <HeaderNav data={data} />
+        <HeaderNav data={data} isAuthenticated={isAuthenticated} />
       </div>
     </header>
   )
