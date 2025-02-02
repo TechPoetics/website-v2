@@ -105,6 +105,7 @@ export const plugins: Plugin[] = [
       region: process.env.S3_REGION ?? 'us-east-1',
       endpoint: process.env.S3_ENDPOINT ?? 'http://localhost:4566', // LocalStack S3 endpoint
       forcePathStyle: true, // Required for LocalStack
+      requestChecksumCalculation: 'WHEN_REQUIRED',
     },
   }),
 ]
