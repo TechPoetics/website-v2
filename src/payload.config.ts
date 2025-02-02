@@ -17,10 +17,11 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { isProduction } from './utilities'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const isVercel = Boolean(process.env.VERCEL)
 
 export default buildConfig({
   admin: {
@@ -61,17 +62,19 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  db: isProduction ? vercelPostgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URI || '',
-    },
-    idType: 'uuid',
-  }) : postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URI || '',
-    },
-    idType: 'uuid',
-  }),
+  db: isVercel
+    ? vercelPostgresAdapter({
+        pool: {
+          connectionString: process.env.DATABASE_URI || '',
+        },
+        idType: 'uuid',
+      })
+    : postgresAdapter({
+        pool: {
+          connectionString: process.env.DATABASE_URI || '',
+        },
+        idType: 'uuid',
+      }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
