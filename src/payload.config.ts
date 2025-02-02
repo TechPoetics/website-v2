@@ -21,7 +21,7 @@ import { getServerSideURL } from './utilities/getURL'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-// const isVercel = Boolean(process.env.VERCEL)
+const isVercel = Boolean(process.env.VERCEL)
 
 export default buildConfig({
   admin: {
@@ -62,7 +62,7 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  db: true
+  db: isVercel
     ? vercelPostgresAdapter({
         pool: {
           connectionString: process.env.DATABASE_URI || '',
