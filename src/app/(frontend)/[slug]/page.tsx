@@ -5,9 +5,6 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
-import { homeStatic } from '@/endpoints/seed/home-static'
-
-import type { Page as PageType } from '@/payload-types'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
@@ -50,20 +47,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { slug = 'home' } = await paramsPromise
   const url = '/' + slug
 
-  let page: PageType | null
-
-  if (slug === 'home') {
-    page = await queryPageBySlug({
-      slug: 'events',
-    })
-    if (!page) {
-      page = homeStatic
-    }
-  } else {
-    page = await queryPageBySlug({
-      slug,
-    })
-  }
+  const page = await queryPageBySlug({
+    slug,
+  })
 
   if (!page) {
     return <PayloadRedirects url={url} />
