@@ -46,8 +46,6 @@ export async function EventCard({ event }: EventCardProps) {
     }),
   })
 
-  console.log(event.description)
-
   // Import editor state into your headless editor
   try {
     headlessEditor.update(
@@ -65,8 +63,6 @@ export async function EventCard({ event }: EventCardProps) {
     headlessEditor.getEditorState().read(() => {
       return $getRoot().getTextContent()
     }) || ''
-
-  console.log('PT', plainTextContent)
 
   function formatDate(date: string) {
     return new Date(date).toLocaleDateString('en-US', {

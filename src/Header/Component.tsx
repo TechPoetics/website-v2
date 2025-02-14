@@ -10,7 +10,6 @@ export async function Header() {
 
   const cookieStore = await cookies()
   const token = cookieStore.get('payload-token')?.value
-  console.log(token)
 
   return <HeaderClient isAuthenticated={!!token} data={headerData} />
 }
