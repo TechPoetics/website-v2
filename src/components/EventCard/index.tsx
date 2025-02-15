@@ -82,8 +82,8 @@ export async function EventCard({ event }: EventCardProps) {
   }
 
   return (
-    <Card className="overflow-hidden">
-      <div className="relative overflow-hidden">
+    <Card className="overflow-hidden flex flex-col">
+      <div className="relative overflow-hidden aspect-[1/1]">
         {image && typeof image !== 'string' && (
           <MediaComp priority imgClassName="z-10" resource={image} />
         )}
@@ -117,10 +117,14 @@ export async function EventCard({ event }: EventCardProps) {
         </div>
         <Separator />
         <div className="space-y-4">
-          <RichText className="max-w-[48rem] mx-auto" data={description} enableGutter={false} />
+          <RichText
+            className="max-w-[48rem] mx-auto h-full line-clamp-[10]"
+            data={description}
+            enableGutter={false}
+          />
         </div>
       </CardContent>
-      <CardFooter className="flex items-center justify-between">
+      <CardFooter className="flex items-center justify-between mt-auto">
         {registration?.status && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="h-4 w-4" />
@@ -147,8 +151,8 @@ function registrationStatusToString(status: RegistrationStatus) {
     case RegistrationStatus.OPEN_TO_ALL:
       return 'Open to all'
     case RegistrationStatus.OPTIONAL:
-      return 'Optional'
+      return 'Registration Optional'
     case RegistrationStatus.REQUIRED:
-      return 'Required'
+      return 'Registration Required'
   }
 }

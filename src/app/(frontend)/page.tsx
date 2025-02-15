@@ -35,14 +35,9 @@ export default async function Page() {
       <PayloadRedirects disableNotFound url="/" />
       {draft && <LivePreviewListener />}
 
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-5xl mx-auto grid gap-8 px-8 md:px-0 md:grid-cols-2">
         {events.docs.map((d) => {
-          return (
-            <EventCard
-              key={d.id}
-              event={d as Event}
-            />
-          )
+          return <EventCard key={d.id} event={d as Event} />
         })}
       </div>
     </article>
