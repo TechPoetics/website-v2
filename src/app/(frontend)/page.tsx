@@ -12,12 +12,17 @@ export default async function Page() {
   const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
 
-  const events = await payload.find({
+  const upcomingEvents = await payload.find({
     collection: 'events',
     depth: 1,
     // TODO paginate?
     limit: 100,
     overrideAccess: false,
+    where: {
+      'date.end': {
+        greater_than_equal: new Date(),
+      },
+    },
     select: {
       title: true,
       slug: true,
@@ -27,7 +32,30 @@ export default async function Page() {
       location: true,
       registration: true,
     },
-    sort: 'date_start',
+    sort: '-date.start',
+  })
+
+  const pastEvents = await payload.find({
+    collection: 'events',
+    depth: 1,
+    // TODO paginate?
+    limit: 100,
+    overrideAccess: false,
+    where: {
+      'date.end': {
+        less_than: new Date(),
+      },
+    },
+    select: {
+      title: true,
+      slug: true,
+      date: true,
+      description: true,
+      image: true,
+      location: true,
+      registration: true,
+    },
+    sort: '-date.start',
   })
 
   return (
@@ -37,10 +65,26 @@ export default async function Page() {
       <PayloadRedirects disableNotFound url="/" />
       {draft && <LivePreviewListener />}
 
-      <div className="max-w-5xl mx-auto grid gap-8 px-8 md:px-0 md:grid-cols-2">
-        {events.docs.map((d) => {
-          return <EventCard key={d.id} event={d as Event} />
-        })}
+      <div className="max-w-5xl mx-auto px-8 md:px-0">
+        {!!upcomingEvents.docs.length && (
+          <div className="pb-12">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">Upcoming Events</h1>
+            <div className="grid gap-8 md:grid-cols-2">
+              {upcomingEvents.docs.map((d) => {
+                return <EventCard key={d.id} event={d as Event} />
+              })}
+            </div>
+          </div>
+        )}
+
+        <div>
+          <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">Past Events</h1>
+          <div className="grid gap-8 md:grid-cols-2">
+            {pastEvents.docs.map((d) => {
+              return <EventCard key={d.id} event={d as Event} />
+            })}
+          </div>
+        </div>
       </div>
     </article>
   )
