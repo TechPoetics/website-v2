@@ -15,7 +15,8 @@ export default async function Page() {
   const events = await payload.find({
     collection: 'events',
     depth: 1,
-    limit: 12,
+    // TODO paginate?
+    limit: 100,
     overrideAccess: false,
     select: {
       title: true,
