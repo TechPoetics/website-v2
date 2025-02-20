@@ -26,6 +26,7 @@ export default async function Page() {
       location: true,
       registration: true,
     },
+    sort: 'date_start',
   })
 
   return (
