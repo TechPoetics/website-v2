@@ -120,6 +120,24 @@ export const Events: CollectionConfig<'events'> = {
       ],
     },
     {
+      name: 'links',
+      label: 'Links',
+      type: 'group',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'rsvp',
+          type: 'text',
+        },
+        {
+          name: 'tickets',
+          type: 'text',
+        },
+      ],
+    },
+    {
       name: 'registration',
       label: 'Registration',
       type: 'group',

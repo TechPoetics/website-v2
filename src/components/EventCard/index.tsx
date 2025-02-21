@@ -1,4 +1,4 @@
-import { CalendarDays, Clock, MapPin, Users } from 'lucide-react'
+import { CalendarDays, Clock, MapPin } from 'lucide-react'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
@@ -11,7 +11,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import RichText from '../RichText'
 import { $getRoot } from '@payloadcms/richtext-lexical/lexical'
 import { Event } from '@/payload-types'
 import { Media as MediaComp } from '../Media'
@@ -23,14 +22,13 @@ import {
   defaultEditorFeatures,
 } from '@payloadcms/richtext-lexical'
 import { createHeadlessEditor } from '@payloadcms/richtext-lexical/lexical/headless'
-import { RegistrationStatus } from '@/collections/Events'
 
 interface EventCardProps {
   event: Event
 }
 
 export async function EventCard({ event }: EventCardProps) {
-  const { location, date, description, image, title, registration } = event
+  const { location, date, image, title, id, links } = event
   const config = await payloadConfig
 
   const editorConfig = await sanitizeServerEditorConfig(
@@ -81,6 +79,8 @@ export async function EventCard({ event }: EventCardProps) {
     })
   }
 
+  console.log(links)
+
   return (
     <Card className="overflow-hidden flex flex-col">
       <div className="relative overflow-hidden aspect-[1/1]">
@@ -115,27 +115,33 @@ export async function EventCard({ event }: EventCardProps) {
             </div>
           </div>
         </div>
-        <Separator />
-        <div className="space-y-4">
+
+        {/* <div className="space-y-4">
           <RichText
             className="max-w-[48rem] mx-auto h-full line-clamp-[10]"
             data={description}
             enableGutter={false}
           />
-        </div>
+        </div> */}
+
+        <Separator />
       </CardContent>
       <CardFooter className="flex items-center justify-between mt-auto">
-        {registration?.status && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Users className="h-4 w-4" />
-            {registrationStatusToString(registration.status as RegistrationStatus)}
-          </div>
-        )}
+        <Link href={`/event/${id}`} target="_blank">
+          Learn more
+        </Link>
         <div className="flex gap-4">
-          {registration?.status !== 'open-to-all' && (
+          {!!links?.rsvp && (
             <Button asChild>
-              <Link href={registration?.link ?? '#'} target="_blank">
-                Register
+              <Link href={links?.rsvp} target="_blank">
+                RSVP
+              </Link>
+            </Button>
+          )}
+          {!!links?.tickets && (
+            <Button asChild>
+              <Link href={links?.tickets} target="_blank">
+                Tickets
               </Link>
             </Button>
           )}
@@ -144,15 +150,4 @@ export async function EventCard({ event }: EventCardProps) {
       </CardFooter>
     </Card>
   )
-}
-
-function registrationStatusToString(status: RegistrationStatus) {
-  switch (status) {
-    case RegistrationStatus.OPEN_TO_ALL:
-      return 'Open to all'
-    case RegistrationStatus.OPTIONAL:
-      return 'Registration Optional'
-    case RegistrationStatus.REQUIRED:
-      return 'Registration Required'
-  }
 }

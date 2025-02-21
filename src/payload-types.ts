@@ -702,6 +702,10 @@ export interface Event {
     name: string;
     address: string;
   };
+  links?: {
+    rsvp?: string | null;
+    tickets?: string | null;
+  };
   registration?: {
     status?: ('open-to-all' | 'optional' | 'required') | null;
     link?: string | null;
@@ -1299,6 +1303,12 @@ export interface EventsSelect<T extends boolean = true> {
     | {
         name?: T;
         address?: T;
+      };
+  links?:
+    | T
+    | {
+        rsvp?: T;
+        tickets?: T;
       };
   registration?:
     | T

@@ -24,7 +24,7 @@ export const HeaderNav: React.FC<{ data: HeaderType; isAuthenticated: boolean }>
         <SearchIcon className="w-5 text-primary" />
       </Link>
 
-      {!isAuthenticated && <Link href="/admin/login">Login</Link>}
+      
     </nav>
   )
 }
