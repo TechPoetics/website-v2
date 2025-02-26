@@ -11,7 +11,7 @@ export const revalidateEvent: CollectionAfterChangeHook<Event> = ({
 }) => {
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
-      const path = `/event/${doc.id}`
+      const path = `/events/${doc.id}`
 
       payload.logger.info(`Revalidating event at path: ${path}`)
 
@@ -21,7 +21,7 @@ export const revalidateEvent: CollectionAfterChangeHook<Event> = ({
 
     // If the event was previously published, we need to revalidate the old path
     if (previousDoc._status === 'published' && doc._status !== 'published') {
-      const oldPath = `/event/${previousDoc.id}`
+      const oldPath = `/events/${previousDoc.id}`
 
       payload.logger.info(`Revalidating old event at path: ${oldPath}`)
 
@@ -34,7 +34,7 @@ export const revalidateEvent: CollectionAfterChangeHook<Event> = ({
 
 export const revalidateDelete: CollectionAfterDeleteHook<Event> = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate) {
-    const path = `/event/${doc?.id}`
+    const path = `/events/${doc?.id}`
 
     revalidatePath(path)
     revalidateTag('events-sitemap')
