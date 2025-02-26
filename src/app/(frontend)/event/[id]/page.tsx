@@ -56,7 +56,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       {draft && <LivePreviewListener />}
 
       <div className="max-w-2xl mx-auto px-8 md:px-0">
-        <EventCard event={event} onEventPage />
+        {/* <EventCard event={event} onEventPage /> */}
       </div>
     </article>
   )
