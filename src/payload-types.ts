@@ -704,15 +704,7 @@ export interface Event {
   };
   external_link?: {
     href?: string | null;
-    button_text?: string | null;
-  };
-  links?: {
-    rsvp?: string | null;
-    tickets?: string | null;
-  };
-  registration?: {
-    status?: ('open-to-all' | 'optional' | 'required') | null;
-    link?: string | null;
+    'button-text'?: string | null;
   };
   image: string | Media;
   description: {
@@ -1312,19 +1304,7 @@ export interface EventsSelect<T extends boolean = true> {
     | T
     | {
         href?: T;
-        button_text?: T;
-      };
-  links?:
-    | T
-    | {
-        rsvp?: T;
-        tickets?: T;
-      };
-  registration?:
-    | T
-    | {
-        status?: T;
-        link?: T;
+        'button-text'?: T;
       };
   image?: T;
   description?: T;

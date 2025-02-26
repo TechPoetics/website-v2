@@ -132,77 +132,8 @@ export const Events: CollectionConfig<'events'> = {
           type: 'text',
         },
         {
-          name: 'button_text',
+          name: 'button-text',
           type: 'text',
-        },
-      ],
-    },
-    {
-      name: 'links',
-      label: 'Links',
-      type: 'group',
-      admin: {
-        position: 'sidebar',
-      },
-      fields: [
-        {
-          name: 'rsvp',
-          type: 'text',
-        },
-        {
-          name: 'tickets',
-          type: 'text',
-        },
-      ],
-    },
-    {
-      name: 'registration',
-      label: 'Registration',
-      type: 'group',
-      admin: {
-        position: 'sidebar',
-      },
-      fields: [
-        {
-          name: 'status',
-          type: 'radio',
-          options: [
-            {
-              label: 'Open to all',
-              value: RegistrationStatus.OPEN_TO_ALL,
-            },
-            {
-              label: 'Optional',
-              value: RegistrationStatus.OPTIONAL,
-            },
-            {
-              label: 'Required',
-              value: RegistrationStatus.REQUIRED,
-            },
-          ],
-          defaultValue: 'open-to-all',
-          admin: {
-            layout: 'horizontal',
-          },
-        },
-        // {
-        //   name: 'required',
-        //   type: 'checkbox',
-        //   defaultValue: false,
-        // },
-        {
-          name: 'link',
-          type: 'text',
-          required: true,
-          admin: {
-            condition: (data) => {
-              if (data.registration.status === 'open-to-all') {
-                return false
-              } else {
-                return true
-              }
-            },
-          },
         },
       ],
     },

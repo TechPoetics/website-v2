@@ -28,7 +28,7 @@ interface EventCardProps {
 }
 
 export async function EventCard({ event }: EventCardProps) {
-  const { location, date, image, title, id, links, external_link } = event
+  const { location, date, image, title, id, external_link } = event
   const config = await payloadConfig
 
   const editorConfig = await sanitizeServerEditorConfig(
@@ -78,8 +78,6 @@ export async function EventCard({ event }: EventCardProps) {
       hour12: true,
     })
   }
-
-  console.log(links)
 
   return (
     <Card className="overflow-hidden flex flex-col">
@@ -134,7 +132,7 @@ export async function EventCard({ event }: EventCardProps) {
           {!!external_link?.href && (
             <Button asChild>
               <Link href={external_link.href} target="_blank">
-                {external_link.button_text}
+                {external_link['button-text']}
               </Link>
             </Button>
           )}
