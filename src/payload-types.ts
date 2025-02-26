@@ -702,6 +702,10 @@ export interface Event {
     name: string;
     address: string;
   };
+  external_link?: {
+    href?: string | null;
+    button_text?: string | null;
+  };
   links?: {
     rsvp?: string | null;
     tickets?: string | null;
@@ -1303,6 +1307,12 @@ export interface EventsSelect<T extends boolean = true> {
     | {
         name?: T;
         address?: T;
+      };
+  external_link?:
+    | T
+    | {
+        href?: T;
+        button_text?: T;
       };
   links?:
     | T

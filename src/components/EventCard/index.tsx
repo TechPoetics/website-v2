@@ -28,7 +28,7 @@ interface EventCardProps {
 }
 
 export async function EventCard({ event }: EventCardProps) {
-  const { location, date, image, title, id, links } = event
+  const { location, date, image, title, id, links, external_link } = event
   const config = await payloadConfig
 
   const editorConfig = await sanitizeServerEditorConfig(
@@ -131,17 +131,10 @@ export async function EventCard({ event }: EventCardProps) {
           Learn more
         </Link>
         <div className="flex gap-4">
-          {!!links?.rsvp && (
+          {!!external_link?.href && (
             <Button asChild>
-              <Link href={links?.rsvp} target="_blank">
-                RSVP
-              </Link>
-            </Button>
-          )}
-          {!!links?.tickets && (
-            <Button asChild>
-              <Link href={links?.tickets} target="_blank">
-                Tickets
+              <Link href={external_link.href} target="_blank">
+                {external_link.button_text}
               </Link>
             </Button>
           )}

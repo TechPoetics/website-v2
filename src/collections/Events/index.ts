@@ -120,6 +120,24 @@ export const Events: CollectionConfig<'events'> = {
       ],
     },
     {
+      name: 'external_link',
+      label: 'External Link',
+      type: 'group',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'href',
+          type: 'text',
+        },
+        {
+          name: 'button_text',
+          type: 'text',
+        },
+      ],
+    },
+    {
       name: 'links',
       label: 'Links',
       type: 'group',

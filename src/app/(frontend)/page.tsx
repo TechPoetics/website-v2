@@ -32,6 +32,7 @@ export default async function Page() {
       location: true,
       registration: true,
       links: true,
+      external_link: true,
     },
     sort: '-date.start',
   })
