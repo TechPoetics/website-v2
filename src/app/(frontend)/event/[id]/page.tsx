@@ -9,6 +9,7 @@ import React, { cache } from 'react'
 import { generateMeta } from '@/utilities/generateMeta'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { EventCard } from '@/components/EventCard'
+import PageClient from './page.client'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -51,6 +52,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   return (
     <article>
+      <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
