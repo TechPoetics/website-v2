@@ -52,7 +52,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   return (
     <article>
       {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url="/" />
+      <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
       <div className="max-w-2xl mx-auto px-8 md:px-0">
