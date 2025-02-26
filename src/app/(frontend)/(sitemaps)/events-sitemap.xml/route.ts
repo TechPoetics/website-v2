@@ -37,7 +37,7 @@ const getEventsSitemap = unstable_cache(
         lastmod: dateFallback,
       },
       {
-        loc: `${SITE_URL}/event`,
+        loc: `${SITE_URL}/events`,
         lastmod: dateFallback,
       },
     ]
