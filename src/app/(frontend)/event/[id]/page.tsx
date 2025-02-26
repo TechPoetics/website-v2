@@ -38,18 +38,15 @@ type Args = {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { id } = await paramsPromise
-
-  if (!id) {
-    return <PayloadRedirects url="/" />
-  }
+  const { id = '' } = await paramsPromise
+  const url = '/event/' + id
 
   const event = await queryEventById({
     id,
   })
 
   if (!event) {
-    return <PayloadRedirects url="/" />
+    return <PayloadRedirects url={url} />
   }
 
   return (
