@@ -15,7 +15,7 @@ import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { revalidateDelete, revalidateEvent } from './hooks/revalidatePost'
+import { revalidateDelete, revalidateEvent } from './hooks/revalidateEvent'
 
 import { slugField } from '@/fields/slug'
 
