@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -22,12 +21,15 @@ import {
   defaultEditorFeatures,
 } from '@payloadcms/richtext-lexical'
 import { createHeadlessEditor } from '@payloadcms/richtext-lexical/lexical/headless'
+import RichText from '../RichText'
+import clsx from 'clsx'
 
 interface EventCardProps {
   event: Event
+  onEventPage?: boolean
 }
 
-export async function EventCard({ event }: EventCardProps) {
+export async function EventCard({ event, onEventPage }: EventCardProps) {
   const { location, date, image, title, id, external_link } = event
   const config = await payloadConfig
 
@@ -63,20 +65,22 @@ export async function EventCard({ event }: EventCardProps) {
     }) || ''
 
   function formatDate(date: string) {
-    return new Date(date).toLocaleDateString('en-US', {
+    return new Intl.DateTimeFormat('en-US', {
       weekday: 'long',
       month: 'long',
       day: 'numeric',
       year: 'numeric',
-    })
+      timeZone: 'EST',
+    }).format(new Date(date))
   }
 
   function formatTime(date: string) {
-    return new Date(date).toLocaleTimeString('en-US', {
+    return new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
       minute: 'numeric',
       hour12: true,
-    })
+      timeZone: 'EST',
+    }).format(new Date(date))
   }
 
   return (
@@ -90,44 +94,44 @@ export async function EventCard({ event }: EventCardProps) {
         <div className="flex items-start justify-between">
           <div className="space-y-1">
             <CardTitle className="text-2xl">{title}</CardTitle>
-            <CardDescription className="flex items-center gap-2">
-              <CalendarDays className="h-4 w-4" />
-              {formatDate(date.start)}
-            </CardDescription>
+            <div className="grid gap-2">
+              <div className="flex items-center gap-2 text-sm">
+                <CalendarDays className="h-4 w-4" />
+                {formatDate(date.start)}
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <span>
+                  {formatTime(date.start)} - {formatTime(date.end)}
+                </span>
+              </div>
+              <div className="flex items-start gap-2 text-sm">
+                <MapPin className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <div className="font-medium">{location.name}</div>
+                  <div className="text-muted-foreground">{location.address}</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </CardHeader>
       <CardContent className="grid gap-4">
-        <div className="grid gap-2">
-          <div className="flex items-center gap-2 text-sm">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <span>
-              {formatTime(date.start)} - {formatTime(date.end)}
-            </span>
+        {onEventPage && (
+          <div className="space-y-4">
+            <RichText className="mx-auto h-full" data={event.description} enableGutter={false} />
           </div>
-          <div className="flex items-start gap-2 text-sm">
-            <MapPin className="h-4 w-4 text-muted-foreground" />
-            <div>
-              <div className="font-medium">{location.name}</div>
-              <div className="text-muted-foreground">{location.address}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* <div className="space-y-4">
-          <RichText
-            className="max-w-[48rem] mx-auto h-full line-clamp-[10]"
-            data={description}
-            enableGutter={false}
-          />
-        </div> */}
+        )}
 
         <Separator />
       </CardContent>
-      <CardFooter className="flex items-center justify-between mt-auto">
-        <Link href={`/event/${id}`} target="_blank">
-          Learn more
-        </Link>
+      <CardFooter
+        className={clsx('flex items-center mt-auto', {
+          'justify-between': !onEventPage,
+          'justify-end': onEventPage,
+        })}
+      >
+        {!onEventPage && <Link href={`/event/${id}`}>Learn more</Link>}
         <div className="flex gap-4">
           {!!external_link?.href && (
             <Button asChild>

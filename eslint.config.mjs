@@ -11,6 +11,7 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...compat.plugins('unused-imports'),
   {
     rules: {
       '@typescript-eslint/ban-ts-comment': 'warn',
@@ -28,10 +29,12 @@ const eslintConfig = [
           caughtErrorsIgnorePattern: '^(_|ignore)',
         },
       ],
+      // Automatically remove unused imports
+      'unused-imports/no-unused-imports': 'warn',
     },
   },
   {
-    ignores: ['.next/'],
+    ignores: ['.next/', 'src/migrations'],
   },
 ]
 

@@ -6,18 +6,19 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 
-import { AdminBar } from '@/components/AdminBar'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import { cookies } from 'next/headers'
+import clsx from 'clsx'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  
+  const cookieStore = await cookies()
+  const token = cookieStore.get('payload-token')?.value
 
   return (
     <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
@@ -29,7 +30,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <Providers>
           <Header />
-          {children}
+          <div
+            className={clsx('pb-12', {
+              'pt-28': !!token,
+              'pt-24': !token,
+            })}
+          >
+            {children}
+          </div>
           {/* <Footer /> */}
         </Providers>
         <Analytics />
@@ -41,8 +49,5 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   openGraph: mergeOpenGraph(),
-  twitter: {
-    card: 'summary_large_image',
-    creator: '@payloadcms',
-  },
+  // TODO add instagram and FB
 }

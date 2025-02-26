@@ -55,6 +55,7 @@ export const ThemeSelector: React.FC = () => {
 }
 
 export function ThemeToggle() {
+  const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
 
   const toggleTheme = () => {
@@ -62,11 +63,19 @@ export function ThemeToggle() {
   }
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
     const preference = window.localStorage.getItem(themeLocalStorageKey)
     if (!!preference) {
       setTheme(preference as Theme)
     }
   }, [setTheme])
+
+  if (!mounted) {
+    return <div className="w-11 h-6 bg-gray-300 rounded-md animate-pulse"></div> // Skeleton while waiting for hydration
+  }
 
   return (
     <div className="flex items-center space-x-2 transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
