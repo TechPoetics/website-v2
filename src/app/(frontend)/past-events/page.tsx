@@ -32,10 +32,10 @@ export default async function Page() {
       <PayloadRedirects disableNotFound url="/" />
       {draft && <LivePreviewListener />}
 
-      <div className="max-w-5xl mx-auto px-8 md:px-0">
+      <div>
         <div>
           <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">Past Events</h1>
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-8 lg:grid-cols-2">
             {pastEvents.docs.map((d) => {
               return <EventCard key={d.id} event={d} />
             })}
