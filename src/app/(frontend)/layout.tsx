@@ -31,8 +31,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Providers>
           <Header />
           <div
-            className={clsx('pb-12', {
-              'pt-28': !!token,
+            className={clsx('container pb-12 px-6', {
+              'pt-28 xs:pt-16 md:pt-28': !!token,
               'pt-24': !token,
             })}
           >

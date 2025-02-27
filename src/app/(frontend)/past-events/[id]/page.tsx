@@ -40,7 +40,7 @@ type Args = {
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { id = '' } = await paramsPromise
-  const url = '/events/' + id
+  const url = '/past-events/' + id
 
   const event = await queryEventById({
     id,
@@ -57,7 +57,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
-      <div className="max-w-2xl mx-auto px-8 md:px-0">
+      <div className="max-w-3xl mx-auto px-8 md:px-0">
         <EventCard event={event} onEventPage />
       </div>
     </article>

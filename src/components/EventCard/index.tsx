@@ -2,13 +2,7 @@ import { CalendarDays, Clock, MapPin } from 'lucide-react'
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { $getRoot } from '@payloadcms/richtext-lexical/lexical'
 import { Event } from '@/payload-types'
@@ -100,13 +94,13 @@ export async function EventCard({ event, onEventPage }: EventCardProps) {
                 {formatDate(date.start)}
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Clock className="h-4 w-4 text-muted-foreground" />
+                <Clock className="h-4 w-4" />
                 <span>
                   {formatTime(date.start)} - {formatTime(date.end)}
                 </span>
               </div>
               <div className="flex items-start gap-2 text-sm">
-                <MapPin className="h-4 w-4 text-muted-foreground" />
+                <MapPin className="h-4 w-4" />
                 <div>
                   <div className="font-medium">{location.name}</div>
                   <div className="text-muted-foreground">{location.address}</div>
@@ -131,7 +125,7 @@ export async function EventCard({ event, onEventPage }: EventCardProps) {
           'justify-end': onEventPage,
         })}
       >
-        {!onEventPage && <Link href={`/events/${id}`}>Learn more</Link>}
+        {!onEventPage && <Link href={`/past-events/${id}`}>Learn more</Link>}
         <div className="flex gap-4">
           {!!external_link?.href && (
             <Button asChild>

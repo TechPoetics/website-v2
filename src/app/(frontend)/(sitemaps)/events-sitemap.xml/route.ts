@@ -32,12 +32,14 @@ const getEventsSitemap = unstable_cache(
     const dateFallback = new Date().toISOString()
 
     const defaultSitemap = [
+      // TODO remove?
       {
         loc: `${SITE_URL}/search`,
         lastmod: dateFallback,
       },
+      // TODO upcoming events?
       {
-        loc: `${SITE_URL}/events`,
+        loc: `${SITE_URL}/past-events`,
         lastmod: dateFallback,
       },
     ]
@@ -45,8 +47,9 @@ const getEventsSitemap = unstable_cache(
     const sitemap = results.docs
       ? results.docs
           .filter((event) => Boolean(event?.slug))
+          // TODO handle upcoming events
           .map((event) => ({
-            loc: `${SITE_URL}/events/${event?.id}`,
+            loc: `${SITE_URL}/past-events/${event?.id}`,
             lastmod: event.updatedAt || dateFallback,
           }))
       : []

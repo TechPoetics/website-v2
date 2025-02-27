@@ -1,11 +1,13 @@
 import { EventCard } from '@/components/EventCard'
-import { generateMetadata } from './[slug]/page'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import PageClient from './[slug]/page.client'
+import PageClient from './past-events/[id]/page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { draftMode } from 'next/headers'
+
+export const dynamic = 'force-static'
+export const revalidate = 600
 
 export default async function Page() {
   const { isEnabled: draft } = await draftMode()
@@ -32,18 +34,12 @@ export default async function Page() {
       <PayloadRedirects disableNotFound url="/" />
       {draft && <LivePreviewListener />}
 
-      <div className="max-w-5xl mx-auto px-8 md:px-0">
-        <div className="pb-12">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">Upcoming Events</h1>
-          <div className="grid gap-8 md:grid-cols-2">
-            {upcomingEvents.docs.map((d) => {
-              return <EventCard key={d.id} event={d} />
-            })}
-          </div>
-        </div>
+      <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">Upcoming Events</h1>
+      <div className="grid gap-8 md:grid-cols-2">
+        {upcomingEvents.docs.map((d) => {
+          return <EventCard key={d.id} event={d} />
+        })}
       </div>
     </article>
   )
 }
-
-export { generateMetadata }
