@@ -79,11 +79,9 @@ export async function EventCard({ event, onEventPage }: EventCardProps) {
 
   return (
     <Card className="overflow-hidden flex flex-col">
-      <div className="relative overflow-hidden aspect-[1/1]">
-        {image && typeof image !== 'string' && (
-          <MediaComp priority imgClassName="z-10" resource={image} />
-        )}
-      </div>
+      {image && typeof image !== 'string' && (
+        <MediaComp priority imgClassName="z-10 aspect-[1080/1350]" resource={image} />
+      )}
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="space-y-1">
