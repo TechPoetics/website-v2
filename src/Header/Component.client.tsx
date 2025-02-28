@@ -2,7 +2,7 @@
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { JSX, useEffect, useState } from 'react'
+import React, { JSX, useEffect, useRef, useState } from 'react'
 
 import type { Header } from '@/payload-types'
 
@@ -86,18 +86,18 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ isAuthenticated, adm
 
         <div className="flex lg:hidden gap-4">
           <ThemeToggle />
-          <DrawerComp isAuthenticated={isAuthenticated} />
+          <MobileNav isAuthenticated={isAuthenticated} />
         </div>
       </div>
     </header>
   )
 }
 
-interface DrawerProps {
+interface NavProps {
   isAuthenticated: boolean
 }
 
-function DesktopNav({ isAuthenticated }: DrawerProps) {
+function DesktopNav({ isAuthenticated }: NavProps) {
   return (
     <div className="flex gap-4">
       <nav className=" flex items-center justify-self-center gap-8">
@@ -119,10 +119,12 @@ function DesktopNav({ isAuthenticated }: DrawerProps) {
   )
 }
 
-function DrawerComp({ isAuthenticated }: DrawerProps) {
+function MobileNav({ isAuthenticated }: NavProps) {
+  const drawerRef = useRef<HTMLButtonElement | null>(null)
+
   return (
     <Drawer>
-      <DrawerTrigger>
+      <DrawerTrigger ref={drawerRef}>
         <svg
           width="15"
           height="15"
@@ -151,6 +153,12 @@ function DrawerComp({ isAuthenticated }: DrawerProps) {
               <Link
                 key={l.title}
                 href={l.href}
+                onClick={() => {
+                  // Automatically close the drawer when a link is clicked.
+                  if (drawerRef) {
+                    drawerRef.current?.click()
+                  }
+                }}
                 className={clsx('text-md transition-colors', {
                   hidden: l.href === '/admin' && isAuthenticated,
                 })}
