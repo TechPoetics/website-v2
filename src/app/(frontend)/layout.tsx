@@ -14,7 +14,6 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { cookies } from 'next/headers'
-import clsx from 'clsx'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies()
@@ -30,15 +29,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <Providers>
           <Header />
-          <div
-            className={clsx('container pb-12 px-6', {
-              'pt-28 xs:pt-16 md:pt-28': !!token,
-              'pt-24': !token,
-            })}
-          >
-            {children}
-          </div>
-          {/* <Footer /> */}
+          <div className="container pb-12 px-6 pt-24 xs:pt-16 md:pt-28">{children}</div>
         </Providers>
         <Analytics />
       </body>
