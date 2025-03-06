@@ -40,7 +40,7 @@ type Args = {
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
   const { id = '' } = await paramsPromise
-  const url = '/past-events/' + id
+  const url = '/events/' + id
 
   const event = await queryEventById({
     id,

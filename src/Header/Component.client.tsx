@@ -39,12 +39,12 @@ const links: Link[] = [
   },
   {
     title: 'Past Events',
-    href: '/past-events',
+    href: '/events',
   },
-  {
-    title: 'Showcase',
-    href: '/showcase',
-  },
+  // {
+  //   title: 'Showcase',
+  //   href: '/showcase',
+  // },
   {
     title: 'Login',
     href: '/admin',
@@ -126,8 +126,8 @@ function MobileNav({ isAuthenticated }: NavProps) {
     <Drawer>
       <DrawerTrigger ref={drawerRef}>
         <svg
-          width="15"
-          height="15"
+          width="25"
+          height="25"
           viewBox="0 0 15 15"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +159,7 @@ function MobileNav({ isAuthenticated }: NavProps) {
                     drawerRef.current?.click()
                   }
                 }}
-                className={clsx('text-md transition-colors', {
+                className={clsx('text-md transition-colors text-lg', {
                   hidden: l.href === '/admin' && isAuthenticated,
                 })}
               >

@@ -1,65 +1,56 @@
-import React from 'react'
+import { draftMode } from 'next/headers'
+import { getPayload } from 'payload'
+import React, { cache } from 'react'
+import configPromise from '@payload-config'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { RenderHero } from '@/heros/RenderHero'
+import PageClient from '../[slug]/page.client'
 
 export default async function Page() {
-  // const { q: query } = await searchParamsPromise
-  // const payload = await getPayload({ config: configPromise })
+  const { isEnabled: draft } = await draftMode()
+  const url = '/about'
 
-  // const posts = await payload.find({
-  //   collection: 'search',
-  //   depth: 1,
-  //   limit: 12,
-  //   select: {
-  //     title: true,
-  //     slug: true,
-  //     categories: true,
-  //     meta: true,
-  //   },
-  //   // pagination: false reduces overhead if you don't need totalDocs
-  //   pagination: false,
-  //   ...(query
-  //     ? {
-  //         where: {
-  //           or: [
-  //             {
-  //               title: {
-  //                 like: query,
-  //               },
-  //             },
-  //             {
-  //               'meta.description': {
-  //                 like: query,
-  //               },
-  //             },
-  //             {
-  //               'meta.title': {
-  //                 like: query,
-  //               },
-  //             },
-  //             {
-  //               slug: {
-  //                 like: query,
-  //               },
-  //             },
-  //           ],
-  //         },
-  //       }
-  //     : {}),
-  // })
+  const page = await queryAboutPage()
+
+  if (!page) {
+    return <PayloadRedirects url={url} />
+  }
+
+  const { hero, layout } = page
 
   return (
-    <div>
-      {/* <PageClient /> */}
-      <div className="">
-        <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">About</h1>
+    <article>
+      <PageClient />
+      {/* Allows redirects for valid pages too */}
+      <PayloadRedirects disableNotFound url={url} />
 
-        <div className=" mx-auto">Lorem Ipsum</div>
-      </div>
+      {draft && <LivePreviewListener />}
 
-      {/* {posts.totalDocs > 0 ? (
-        <CollectionArchive posts={posts.docs as CardPostData[]} />
-      ) : (
-        <div className="container">No results found.</div>
-      )} */}
-    </div>
+      <RenderHero {...hero} />
+      <RenderBlocks blocks={layout} />
+    </article>
   )
 }
+
+const queryAboutPage = cache(async () => {
+  const { isEnabled: draft } = await draftMode()
+
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'pages',
+    draft,
+    limit: 1,
+    pagination: false,
+    overrideAccess: draft,
+    where: {
+      slug: {
+        equals: 'about',
+      },
+    },
+  })
+
+  return result.docs?.[0] || null
+})

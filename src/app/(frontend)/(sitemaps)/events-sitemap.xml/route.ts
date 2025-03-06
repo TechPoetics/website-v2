@@ -9,7 +9,7 @@ const getEventsSitemap = unstable_cache(
     const SITE_URL =
       process.env.NEXT_PUBLIC_SERVER_URL ||
       process.env.VERCEL_PROJECT_PRODUCTION_URL ||
-      'https://example.com'
+      'https://bostontechpoetics.com'
 
     const results = await payload.find({
       collection: 'events',
@@ -31,30 +31,17 @@ const getEventsSitemap = unstable_cache(
 
     const dateFallback = new Date().toISOString()
 
-    const defaultSitemap = [
-      // TODO remove?
-      {
-        loc: `${SITE_URL}/search`,
-        lastmod: dateFallback,
-      },
-      // TODO upcoming events?
-      {
-        loc: `${SITE_URL}/past-events`,
-        lastmod: dateFallback,
-      },
-    ]
-
     const sitemap = results.docs
       ? results.docs
           .filter((event) => Boolean(event?.slug))
           // TODO handle upcoming events
           .map((event) => ({
-            loc: `${SITE_URL}/past-events/${event?.id}`,
+            loc: `${SITE_URL}/events/${event?.id}`,
             lastmod: event.updatedAt || dateFallback,
           }))
       : []
 
-    return [...defaultSitemap, ...sitemap]
+    return sitemap
   },
   ['events-sitemap'],
   {

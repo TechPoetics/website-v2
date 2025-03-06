@@ -2,7 +2,7 @@ import { EventCard } from '@/components/EventCard'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
-import PageClient from './past-events/[id]/page.client'
+import PageClient from './events/[id]/page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { draftMode } from 'next/headers'
 

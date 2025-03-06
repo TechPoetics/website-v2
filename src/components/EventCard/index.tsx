@@ -123,7 +123,7 @@ export async function EventCard({ event, onEventPage }: EventCardProps) {
           'justify-end': onEventPage,
         })}
       >
-        {!onEventPage && <Link href={`/past-events/${id}`}>Learn more</Link>}
+        {!onEventPage && <Link href={`/events/${id}`}>Learn more</Link>}
         <div className="flex gap-4">
           {!!external_link?.href && (
             <Button asChild>
