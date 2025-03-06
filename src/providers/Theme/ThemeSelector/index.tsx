@@ -17,6 +17,7 @@ import type { Theme } from './types'
 
 import { useTheme } from '..'
 import { themeLocalStorageKey } from './types'
+import { Button } from '@/components/ui/button'
 
 export const ThemeSelector: React.FC = () => {
   const { setTheme } = useTheme()
@@ -99,6 +100,47 @@ export function ThemeToggle() {
             : 'text-foreground scale-100 rotate-0'
         }`}
       />
+    </div>
+  )
+}
+
+export function MobileThemeToggle() {
+  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme()
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light')
+  }
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    const preference = window.localStorage.getItem(themeLocalStorageKey)
+    if (!!preference) {
+      setTheme(preference as Theme)
+    }
+  }, [setTheme])
+
+  if (!mounted) {
+    return <div className="w-11 h-6 bg-gray-300 rounded-md animate-pulse"></div> // Skeleton while waiting for hydration
+  }
+
+  return (
+    <div className="flex items-center space-x-2">
+      <Button
+        onClick={toggleTheme}
+        size="icon"
+        variant="outline"
+        className="hover:bg-accent rounded-[8px]"
+      >
+        {theme === 'light' ? (
+          <Sun className="h-[1.2rem] w-[1.2rem] text-foreground scale-100 rotate-0" />
+        ) : (
+          <Moon className="h-[1.2rem] w-[1.2rem] text-foreground scale-100 rotate-0" />
+        )}
+      </Button>
     </div>
   )
 }

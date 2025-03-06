@@ -6,7 +6,7 @@ import React, { JSX, useEffect, useRef, useState } from 'react'
 
 import type { Header } from '@/payload-types'
 
-import { ThemeToggle } from '@/providers/Theme/ThemeSelector'
+import { MobileThemeToggle, ThemeToggle } from '@/providers/Theme/ThemeSelector'
 import {
   Drawer,
   DrawerContent,
@@ -85,7 +85,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ isAuthenticated, adm
         </div>
 
         <div className="flex lg:hidden gap-4">
-          <ThemeToggle />
+          <MobileThemeToggle />
           <MobileNav isAuthenticated={isAuthenticated} />
         </div>
       </div>
