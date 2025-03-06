@@ -57,7 +57,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto pt-8">
         <EventCard event={event} onEventPage />
       </div>
     </article>

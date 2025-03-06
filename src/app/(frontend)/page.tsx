@@ -34,11 +34,13 @@ export default async function Page() {
       <PayloadRedirects disableNotFound url="/" />
       {draft && <LivePreviewListener />}
 
-      <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">Upcoming Events</h1>
-      <div className="grid gap-8 md:grid-cols-2">
-        {upcomingEvents.docs.map((d) => {
-          return <EventCard key={d.id} event={d} />
-        })}
+      <div className="pt-2 md:pt-0">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">Upcoming Events</h1>
+        <div className="grid gap-8 md:grid-cols-2">
+          {upcomingEvents.docs.map((d) => {
+            return <EventCard key={d.id} event={d} />
+          })}
+        </div>
       </div>
     </article>
   )
