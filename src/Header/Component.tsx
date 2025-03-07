@@ -1,31 +1,30 @@
-import { HeaderClient } from './Component.client'
-import { getCachedGlobal } from '@/utilities/getGlobals'
 import React from 'react'
 
 import type { Header } from '@/payload-types'
-import { cookies, draftMode } from 'next/headers'
+import { draftMode } from 'next/headers'
 import { AdminBar } from '@/components/AdminBar'
+import { HeaderNav } from './Nav'
+import Link from 'next/link'
 
 export async function Header() {
   const { isEnabled } = await draftMode()
-  const headerData: Header = await getCachedGlobal('header', 1)()
-
-  const cookieStore = await cookies()
-  const token = cookieStore.get('payload-token')?.value
-
   return (
     <div>
-      <HeaderClient
-        isAuthenticated={!!token}
-        data={headerData}
-        adminBar={(
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
-        )}
-      />
+      <header className="fixed top-0 left-0 right-0 z-50">
+        <AdminBar
+          adminBarProps={{
+            preview: isEnabled,
+          }}
+        />
+
+        <div className="flex justify-between px-6 py-4 backdrop-blur-xl">
+          <Link href="/" className="justify-self-start">
+            <h1 className="text-3xl lg:text-4xl">Boston Tech Poetics</h1>
+          </Link>
+
+          <HeaderNav />
+        </div>
+      </header>
     </div>
   )
 }
