@@ -17,17 +17,19 @@ export const revalidateEvent: CollectionAfterChangeHook<Event> = ({
         payload.logger.info(`Revalidating event at path: ${p}`)
 
         revalidatePath(p)
-        revalidateTag('events-sitemap')
       })
+      revalidateTag('events-sitemap')
     }
 
     // If the event was previously published, we need to revalidate the old path
     if (previousDoc._status === 'published' && doc._status !== 'published') {
-      const oldPath = `/events/${previousDoc.id}`
+      const paths = ['/', '/events', `/events/${doc.id}`]
 
-      payload.logger.info(`Revalidating old event at path: ${oldPath}`)
+      paths.forEach((p) => {
+        payload.logger.info(`Revalidating old event at path: ${p}`)
 
-      revalidatePath(oldPath)
+        revalidatePath(p)
+      })
       revalidateTag('events-sitemap')
     }
   }
@@ -40,8 +42,8 @@ export const revalidateDelete: CollectionAfterDeleteHook<Event> = ({ doc, req: {
 
     paths.forEach((p) => {
       revalidatePath(p)
-      revalidateTag('events-sitemap')
     })
+    revalidateTag('events-sitemap')
   }
 
   return doc
