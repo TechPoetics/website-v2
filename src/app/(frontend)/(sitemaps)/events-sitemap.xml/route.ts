@@ -40,6 +40,10 @@ const getEventsSitemap = unstable_cache(
             lastmod: event.updatedAt || dateFallback,
           }))
       : []
+      sitemap.push({
+        loc: `${SITE_URL}/events`,
+        lastmod: dateFallback,
+      })
 
     return sitemap
   },

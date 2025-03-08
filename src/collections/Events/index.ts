@@ -41,7 +41,7 @@ export const Events: CollectionConfig<'events'> = {
     slug: true,
   },
   admin: {
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'date', 'status'],
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
@@ -74,6 +74,7 @@ export const Events: CollectionConfig<'events'> = {
       admin: {
         position: 'sidebar',
       },
+
       fields: [
         {
           name: 'start',
@@ -82,6 +83,8 @@ export const Events: CollectionConfig<'events'> = {
           admin: {
             date: {
               pickerAppearance: 'dayAndTime',
+              displayFormat: 'MMMM yyyy',
+              timeFormat: 'MM-DD-YYYY',
             },
             position: 'sidebar',
           },
