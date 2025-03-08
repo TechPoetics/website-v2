@@ -11,12 +11,14 @@ export const revalidateEvent: CollectionAfterChangeHook<Event> = ({
 }) => {
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
-      const path = `/events/${doc.id}`
+      const paths = ['/', '/events', `/events/${doc.id}`]
 
-      payload.logger.info(`Revalidating event at path: ${path}`)
+      paths.forEach((p) => {
+        payload.logger.info(`Revalidating event at path: ${p}`)
 
-      revalidatePath(path)
-      revalidateTag('events-sitemap')
+        revalidatePath(p)
+        revalidateTag('events-sitemap')
+      })
     }
 
     // If the event was previously published, we need to revalidate the old path
@@ -34,10 +36,12 @@ export const revalidateEvent: CollectionAfterChangeHook<Event> = ({
 
 export const revalidateDelete: CollectionAfterDeleteHook<Event> = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate) {
-    const path = `/events/${doc?.id}`
+    const paths = ['/', '/events', `/events/${doc.id}`]
 
-    revalidatePath(path)
-    revalidateTag('events-sitemap')
+    paths.forEach((p) => {
+      revalidatePath(p)
+      revalidateTag('events-sitemap')
+    })
   }
 
   return doc
