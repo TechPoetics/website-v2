@@ -749,18 +749,6 @@ export interface Form {
 export interface Event {
   id: string;
   title: string;
-  date: {
-    start: string;
-    end: string;
-  };
-  location: {
-    name: string;
-    address: string;
-  };
-  external_link?: {
-    href?: string | null;
-    'button-text'?: string | null;
-  };
   image: string | Media;
   description: {
     root: {
@@ -776,6 +764,26 @@ export interface Event {
       version: number;
     };
     [k: string]: unknown;
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  date: {
+    start: string;
+    end: string;
+  };
+  location: {
+    name: string;
+    address: string;
+  };
+  external_link?: {
+    href?: string | null;
+    'button-text'?: string | null;
   };
   slug?: string | null;
   slugLock?: boolean | null;
@@ -1343,6 +1351,15 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
+  image?: T;
+  description?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   date?:
     | T
     | {
@@ -1361,8 +1378,6 @@ export interface EventsSelect<T extends boolean = true> {
         href?: T;
         'button-text'?: T;
       };
-  image?: T;
-  description?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

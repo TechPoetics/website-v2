@@ -18,6 +18,13 @@ import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidateEvent } from './hooks/revalidateEvent'
 
 import { slugField } from '@/fields/slug'
+import {
+  OverviewField,
+  MetaTitleField,
+  MetaImageField,
+  MetaDescriptionField,
+  PreviewField,
+} from '@payloadcms/plugin-seo/fields'
 
 export enum RegistrationStatus {
   OPEN_TO_ALL = 'open-to-all',
@@ -63,9 +70,69 @@ export const Events: CollectionConfig<'events'> = {
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Details',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'image',
+              type: 'upload',
+              required: true,
+              relationTo: 'media',
+            },
+            {
+              name: 'description',
+              type: 'richText',
+              required: true,
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    HorizontalRuleFeature(),
+                  ]
+                },
+              }),
+            },
+          ],
+        },
+        {
+          name: 'meta',
+          label: 'SEO',
+          fields: [
+            OverviewField({
+              titlePath: 'meta.title',
+              descriptionPath: 'meta.description',
+              imagePath: 'meta.image',
+            }),
+            MetaTitleField({
+              hasGenerateFn: true,
+            }),
+            MetaImageField({
+              relationTo: 'media',
+            }),
+
+            MetaDescriptionField({}),
+            PreviewField({
+              // if the `generateUrl` function is configured
+              hasGenerateFn: true,
+
+              // field paths to match the target field for data
+              titlePath: 'meta.title',
+              descriptionPath: 'meta.description',
+            }),
+          ],
+        },
+      ],
     },
     {
       name: 'date',
@@ -74,7 +141,6 @@ export const Events: CollectionConfig<'events'> = {
       admin: {
         position: 'sidebar',
       },
-
       fields: [
         {
           name: 'start',
@@ -137,29 +203,6 @@ export const Events: CollectionConfig<'events'> = {
           type: 'text',
         },
       ],
-    },
-    {
-      name: 'image',
-      type: 'upload',
-      required: true,
-      relationTo: 'media',
-    },
-    {
-      name: 'description',
-      type: 'richText',
-      required: true,
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-            HorizontalRuleFeature(),
-          ]
-        },
-      }),
     },
     ...slugField(),
   ],
