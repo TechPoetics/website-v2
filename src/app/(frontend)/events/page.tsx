@@ -31,7 +31,7 @@ export default async function Page() {
       <PayloadRedirects disableNotFound url="/" />
       {draft && <LivePreviewListener />}
 
-      <div className="pt-2 md:pt-0">
+      <div className="pt-4 md:pt-2">
         <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">Past Events</h1>
         <div className="grid gap-8 lg:grid-cols-2">
           {pastEvents.docs.map((d) => {
