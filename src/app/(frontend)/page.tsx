@@ -36,7 +36,7 @@ export default async function Page() {
       {draft && <LivePreviewListener />}
 
       <div className="pt-4 md:pt-2">
-        <h1 className="text-3xl md:text-5xl lg:text-6xl mb-4">Upcoming Events</h1>
+        <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4">Upcoming Events</h2>
         <div className="grid gap-8 md:grid-cols-2">
           {upcomingEvents.docs.map((d) => {
             return <EventCard key={d.id} event={d} />
