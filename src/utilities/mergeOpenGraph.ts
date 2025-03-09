@@ -3,7 +3,7 @@ import { getServerSideURL } from './getURL'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: 'Boston TechPoetics website.',
+  description: 'A community for tech artists in the Boston area.',
   images: [
     {
       url: `${getServerSideURL()}/android-chrome-512x512.png`,
