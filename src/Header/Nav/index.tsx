@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/drawer'
 
 import Link from 'next/link'
-import { BarsIcon, BlueskyIcon, DiscordIcon, InstagramIcon } from '@/components/Icons'
+import { BarsIcon, BlueskyIcon, DiscordIcon, FacebookIcon, InstagramIcon } from '@/components/Icons'
 
 export type NavLink = {
   title: string
@@ -53,6 +53,10 @@ const socialLinks: SocialLink[] = [
   {
     icon: <InstagramIcon />,
     href: 'https://www.instagram.com/bostontechpoetics',
+  },
+  {
+    icon: <FacebookIcon />,
+    href: 'https://www.facebook.com/techpoetics',
   },
   {
     icon: <BlueskyIcon />,
