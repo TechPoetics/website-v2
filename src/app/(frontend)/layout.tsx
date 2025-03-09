@@ -10,6 +10,7 @@ import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="container pb-12 px-6 pt-24 min-[412px]:pt-16 md:pt-28">{children}</div>
         </Providers>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
