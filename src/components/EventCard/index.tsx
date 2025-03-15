@@ -64,7 +64,7 @@ export async function EventCard({ event, onEventPage }: EventCardProps) {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
-      timeZone: 'EST',
+      timeZone: 'America/New_York',
     }).format(new Date(date))
   }
 
@@ -73,7 +73,7 @@ export async function EventCard({ event, onEventPage }: EventCardProps) {
       hour: 'numeric',
       minute: 'numeric',
       hour12: true,
-      timeZone: 'EST',
+      timeZone: 'America/New_York',
     }).format(new Date(date))
   }
 
