@@ -93,8 +93,12 @@ export const plugins: Plugin[] = [
   }),
   payloadCloudPlugin(),
   s3Storage({
+    // Bypass 4.5Mb file limit on Vercel
+    clientUploads: true,
     collections: {
-      media: true,
+      media: {
+        signedDownloads: true
+      },
     },
     bucket: process.env.S3_BUCKET ?? 'mysamplebucket',
     config: {

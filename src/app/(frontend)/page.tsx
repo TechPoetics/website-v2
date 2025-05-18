@@ -5,8 +5,6 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import PageClient from './events/[id]/page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { draftMode } from 'next/headers'
-import { Metadata } from 'next'
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -45,16 +43,4 @@ export default async function Page() {
       </div>
     </article>
   )
-}
-
-export function generateMetadata(): Metadata {
-  return {
-    description: 'A community for tech artists in the Boston area.',
-    openGraph: mergeOpenGraph({
-      description: 'A community for tech artists in the Boston area.',
-      title: 'Boston Tech Poetics',
-      url: '/',
-    }),
-    title: 'Boston Tech Poetics',
-  }
 }

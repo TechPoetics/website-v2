@@ -26,4 +26,8 @@ const nextConfig = {
   redirects,
 }
 
-export default withPayload(nextConfig)
+
+export default withPayload(nextConfig, { 
+  // https://github.com/payloadcms/payload/releases/tag/v3.28.0
+  devBundleServerPackages: false 
+})

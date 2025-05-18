@@ -3,7 +3,7 @@ import { getServerSideURL } from './getURL'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: 'A community for tech artists in the Boston area.',
+  description: "Boston Tech Poetics is a Boston-based creative collective exploring the intersection of technology, digital art, and interactive media through innovative projects and collaborations.",
   images: [
     {
       url: `${getServerSideURL()}/android-chrome-512x512.png`,

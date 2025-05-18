@@ -105,7 +105,7 @@ export function MobileNav() {
 
   return (
     <Drawer>
-      <DrawerTrigger ref={drawerRef}>
+      <DrawerTrigger ref={drawerRef} aria-label='mobile-nav-menu'>
         <BarsIcon />
       </DrawerTrigger>
       <DrawerContent>

@@ -134,6 +134,7 @@ export function MobileThemeToggle() {
         size="icon"
         variant="outline"
         className="hover:bg-accent rounded-[8px]"
+        aria-label='theme-switcher'
       >
         {theme === 'light' ? (
           <Sun className="h-[1.2rem] w-[1.2rem] text-foreground scale-100 rotate-0" />

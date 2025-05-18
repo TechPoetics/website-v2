@@ -6,6 +6,7 @@
  * and re-run `payload generate:db-schema` to regenerate this file.
  */
 
+import type {} from '@payloadcms/db-postgres'
 import {
   pgTable,
   index,
@@ -22,8 +23,8 @@ import {
   serial,
   type AnyPgColumn,
   pgEnum,
-} from '@payloadcms/db-vercel-postgres/drizzle/pg-core'
-import { sql, relations } from '@payloadcms/db-vercel-postgres/drizzle'
+} from '@payloadcms/db-postgres/drizzle/pg-core'
+import { sql, relations } from '@payloadcms/db-postgres/drizzle'
 export const enum_pages_hero_links_link_type = pgEnum('enum_pages_hero_links_link_type', [
   'reference',
   'custom',
@@ -115,6 +116,11 @@ export const enum__pages_v_version_status = pgEnum('enum__pages_v_version_status
 ])
 export const enum_posts_status = pgEnum('enum_posts_status', ['draft', 'published'])
 export const enum__posts_v_version_status = pgEnum('enum__posts_v_version_status', [
+  'draft',
+  'published',
+])
+export const enum_events_status = pgEnum('enum_events_status', ['draft', 'published'])
+export const enum__events_v_version_status = pgEnum('enum__events_v_version_status', [
   'draft',
   'published',
 ])
@@ -973,6 +979,7 @@ export const media = pgTable(
   {
     id: uuid('id').defaultRandom().primaryKey(),
     alt: varchar('alt'),
+    title: jsonb('title'),
     caption: jsonb('caption'),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()
@@ -1136,6 +1143,126 @@ export const users = pgTable(
     users_updated_at_idx: index('users_updated_at_idx').on(columns.updatedAt),
     users_created_at_idx: index('users_created_at_idx').on(columns.createdAt),
     users_email_idx: uniqueIndex('users_email_idx').on(columns.email),
+  }),
+)
+
+export const events = pgTable(
+  'events',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    title: varchar('title'),
+    image: uuid('image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    description: jsonb('description'),
+    meta_title: varchar('meta_title'),
+    meta_image: uuid('meta_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    meta_description: varchar('meta_description'),
+    date_start: timestamp('date_start', { mode: 'string', withTimezone: true, precision: 3 }),
+    date_end: timestamp('date_end', { mode: 'string', withTimezone: true, precision: 3 }),
+    location_name: varchar('location_name'),
+    location_address: varchar('location_address'),
+    external_link_href: varchar('external_link_href'),
+    'external_link_button-text': varchar('external_link_button_text'),
+    slug: varchar('slug'),
+    slugLock: boolean('slug_lock').default(true),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    _status: enum_events_status('_status').default('draft'),
+  },
+  (columns) => ({
+    events_image_idx: index('events_image_idx').on(columns.image),
+    events_meta_meta_image_idx: index('events_meta_meta_image_idx').on(columns.meta_image),
+    events_slug_idx: index('events_slug_idx').on(columns.slug),
+    events_updated_at_idx: index('events_updated_at_idx').on(columns.updatedAt),
+    events_created_at_idx: index('events_created_at_idx').on(columns.createdAt),
+    events__status_idx: index('events__status_idx').on(columns._status),
+  }),
+)
+
+export const _events_v = pgTable(
+  '_events_v',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    parent: uuid('parent_id').references(() => events.id, {
+      onDelete: 'set null',
+    }),
+    version_title: varchar('version_title'),
+    version_image: uuid('version_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    version_description: jsonb('version_description'),
+    version_meta_title: varchar('version_meta_title'),
+    version_meta_image: uuid('version_meta_image_id').references(() => media.id, {
+      onDelete: 'set null',
+    }),
+    version_meta_description: varchar('version_meta_description'),
+    version_date_start: timestamp('version_date_start', {
+      mode: 'string',
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_date_end: timestamp('version_date_end', {
+      mode: 'string',
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_location_name: varchar('version_location_name'),
+    version_location_address: varchar('version_location_address'),
+    version_external_link_href: varchar('version_external_link_href'),
+    'version_external_link_button-text': varchar('version_external_link_button_text'),
+    version_slug: varchar('version_slug'),
+    version_slugLock: boolean('version_slug_lock').default(true),
+    version_updatedAt: timestamp('version_updated_at', {
+      mode: 'string',
+      withTimezone: true,
+      precision: 3,
+    }),
+    version_createdAt: timestamp('version_created_at', {
+      mode: 'string',
+      withTimezone: true,
+      precision: 3,
+    }),
+    version__status: enum__events_v_version_status('version__status').default('draft'),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    latest: boolean('latest'),
+    autosave: boolean('autosave'),
+  },
+  (columns) => ({
+    _events_v_parent_idx: index('_events_v_parent_idx').on(columns.parent),
+    _events_v_version_version_image_idx: index('_events_v_version_version_image_idx').on(
+      columns.version_image,
+    ),
+    _events_v_version_meta_version_meta_image_idx: index(
+      '_events_v_version_meta_version_meta_image_idx',
+    ).on(columns.version_meta_image),
+    _events_v_version_version_slug_idx: index('_events_v_version_version_slug_idx').on(
+      columns.version_slug,
+    ),
+    _events_v_version_version_updated_at_idx: index('_events_v_version_version_updated_at_idx').on(
+      columns.version_updatedAt,
+    ),
+    _events_v_version_version_created_at_idx: index('_events_v_version_version_created_at_idx').on(
+      columns.version_createdAt,
+    ),
+    _events_v_version_version__status_idx: index('_events_v_version_version__status_idx').on(
+      columns.version__status,
+    ),
+    _events_v_created_at_idx: index('_events_v_created_at_idx').on(columns.createdAt),
+    _events_v_updated_at_idx: index('_events_v_updated_at_idx').on(columns.updatedAt),
+    _events_v_latest_idx: index('_events_v_latest_idx').on(columns.latest),
+    _events_v_autosave_idx: index('_events_v_autosave_idx').on(columns.autosave),
   }),
 )
 
@@ -1349,6 +1476,7 @@ export const forms_blocks_select = pgTable(
     label: varchar('label'),
     width: numeric('width'),
     defaultValue: varchar('default_value'),
+    placeholder: varchar('placeholder'),
     required: boolean('required'),
     blockName: varchar('block_name'),
   },
@@ -1709,6 +1837,7 @@ export const payload_locked_documents_rels = pgTable(
     mediaID: uuid('media_id'),
     categoriesID: uuid('categories_id'),
     usersID: uuid('users_id'),
+    eventsID: uuid('events_id'),
     redirectsID: uuid('redirects_id'),
     formsID: uuid('forms_id'),
     'form-submissionsID': uuid('form_submissions_id'),
@@ -1734,6 +1863,9 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_users_id_idx: index(
       'payload_locked_documents_rels_users_id_idx',
     ).on(columns.usersID),
+    payload_locked_documents_rels_events_id_idx: index(
+      'payload_locked_documents_rels_events_id_idx',
+    ).on(columns.eventsID),
     payload_locked_documents_rels_redirects_id_idx: index(
       'payload_locked_documents_rels_redirects_id_idx',
     ).on(columns.redirectsID),
@@ -1778,6 +1910,11 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns['usersID']],
       foreignColumns: [users.id],
       name: 'payload_locked_documents_rels_users_fk',
+    }).onDelete('cascade'),
+    eventsIdFk: foreignKey({
+      columns: [columns['eventsID']],
+      foreignColumns: [events.id],
+      name: 'payload_locked_documents_rels_events_fk',
     }).onDelete('cascade'),
     redirectsIdFk: foreignKey({
       columns: [columns['redirectsID']],
@@ -2416,6 +2553,35 @@ export const relations_categories = relations(categories, ({ one, many }) => ({
   }),
 }))
 export const relations_users = relations(users, () => ({}))
+export const relations_events = relations(events, ({ one }) => ({
+  image: one(media, {
+    fields: [events.image],
+    references: [media.id],
+    relationName: 'image',
+  }),
+  meta_image: one(media, {
+    fields: [events.meta_image],
+    references: [media.id],
+    relationName: 'meta_image',
+  }),
+}))
+export const relations__events_v = relations(_events_v, ({ one }) => ({
+  parent: one(events, {
+    fields: [_events_v.parent],
+    references: [events.id],
+    relationName: 'parent',
+  }),
+  version_image: one(media, {
+    fields: [_events_v.version_image],
+    references: [media.id],
+    relationName: 'version_image',
+  }),
+  version_meta_image: one(media, {
+    fields: [_events_v.version_meta_image],
+    references: [media.id],
+    relationName: 'version_meta_image',
+  }),
+}))
 export const relations_redirects_rels = relations(redirects_rels, ({ one }) => ({
   parent: one(redirects, {
     fields: [redirects_rels.parent],
@@ -2650,6 +2816,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [users.id],
       relationName: 'users',
     }),
+    eventsID: one(events, {
+      fields: [payload_locked_documents_rels.eventsID],
+      references: [events.id],
+      relationName: 'events',
+    }),
     redirectsID: one(redirects, {
       fields: [payload_locked_documents_rels.redirectsID],
       references: [redirects.id],
@@ -2796,6 +2967,8 @@ type DatabaseSchema = {
   enum__pages_v_version_status: typeof enum__pages_v_version_status
   enum_posts_status: typeof enum_posts_status
   enum__posts_v_version_status: typeof enum__posts_v_version_status
+  enum_events_status: typeof enum_events_status
+  enum__events_v_version_status: typeof enum__events_v_version_status
   enum_redirects_to_type: typeof enum_redirects_to_type
   enum_forms_confirmation_type: typeof enum_forms_confirmation_type
   enum_payload_jobs_log_task_slug: typeof enum_payload_jobs_log_task_slug
@@ -2833,6 +3006,8 @@ type DatabaseSchema = {
   categories_breadcrumbs: typeof categories_breadcrumbs
   categories: typeof categories
   users: typeof users
+  events: typeof events
+  _events_v: typeof _events_v
   redirects: typeof redirects
   redirects_rels: typeof redirects_rels
   forms_blocks_checkbox: typeof forms_blocks_checkbox
@@ -2895,6 +3070,8 @@ type DatabaseSchema = {
   relations_categories_breadcrumbs: typeof relations_categories_breadcrumbs
   relations_categories: typeof relations_categories
   relations_users: typeof relations_users
+  relations_events: typeof relations_events
+  relations__events_v: typeof relations__events_v
   relations_redirects_rels: typeof relations_redirects_rels
   relations_redirects: typeof relations_redirects
   relations_forms_blocks_checkbox: typeof relations_forms_blocks_checkbox
@@ -2929,7 +3106,7 @@ type DatabaseSchema = {
   relations_footer: typeof relations_footer
 }
 
-declare module '@payloadcms/db-vercel-postgres/types' {
+declare module '@payloadcms/db-postgres' {
   export interface GeneratedDatabaseSchema {
     schema: DatabaseSchema
   }
