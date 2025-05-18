@@ -27,10 +27,6 @@ const links: NavLink[] = [
     href: '/',
   },
   {
-    title: 'About',
-    href: '/about',
-  },
-  {
     title: 'Past Events',
     href: '/events',
   },
