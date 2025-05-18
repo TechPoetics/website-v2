@@ -9,7 +9,7 @@ import React from 'react'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { mergeOpenGraph, siteDescription, siteTitle } from '@/utilities/mergeOpenGraph'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import './globals.css'
@@ -36,6 +36,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 
 export const metadata: Metadata = {
+  title: siteTitle,
+  description: siteDescription,
   metadataBase: new URL(getServerSideURL()),
   openGraph: mergeOpenGraph(),
   // TODO add social media cards.
