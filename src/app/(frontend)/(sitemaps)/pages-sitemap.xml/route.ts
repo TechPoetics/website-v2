@@ -42,6 +42,15 @@ const getPagesSitemap = unstable_cache(
           })
       : []
 
+    sitemap.push({
+      loc: `${SITE_URL}`,
+      lastmod: dateFallback
+    })
+    sitemap.push({
+      loc: `${SITE_URL}/events`,
+      lastmod: dateFallback
+    })
+
     return [...sitemap]
   },
   ['pages-sitemap'],

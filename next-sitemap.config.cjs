@@ -9,10 +9,8 @@ module.exports = {
   generateRobotsTxt: true,
   exclude: [
     '/*',
-    '/posts-sitemap.xml',
     '/pages-sitemap.xml',
     '/events-sitemap.xml',
-    '/posts/*',
     '/events/*',
   ],
   robotsTxtOptions: {
@@ -24,7 +22,6 @@ module.exports = {
     ],
     additionalSitemaps: [
       `${SITE_URL}/pages-sitemap.xml`,
-      `${SITE_URL}/posts-sitemap.xml`,
       `${SITE_URL}/events-sitemap.xml`,
     ],
   },
