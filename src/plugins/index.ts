@@ -94,7 +94,7 @@ export const plugins: Plugin[] = [
   payloadCloudPlugin(),
   s3Storage({
     // Bypass 4.5Mb file limit on Vercel
-    clientUploads: true,
+    // clientUploads: true,
     collections: {
       media: {
         signedDownloads: true
