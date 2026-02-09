@@ -24,7 +24,7 @@ export default async function Page() {
         greater_than_equal: new Date(),
       },
     },
-    sort: '-date.start',
+    sort: 'date.start',
   })
 
   return (
