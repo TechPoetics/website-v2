@@ -59,13 +59,13 @@ export default buildConfig({
   db: isVercel
     ? vercelPostgresAdapter({
         pool: {
-          connectionString: process.env.DATABASE_URI || '',
+          connectionString: process.env.DATABASE_URL || '',
         },
         idType: 'uuid',
       })
     : postgresAdapter({
         pool: {
-          connectionString: process.env.DATABASE_URI || '',
+          connectionString: process.env.DATABASE_URL || '',
         },
         idType: 'uuid',
       }),
